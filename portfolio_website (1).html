@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saboor's Data Analytics Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #36454F 50%, #2F4F4F 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 30%;
+            right: 30%;
+            animation-delay: 4s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(128, 128, 128, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            border-color: #666666;
+        }
+
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #36454F, #000000);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-icon {
+            transform: rotate(360deg);
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2F4F4F;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #36454F, #2F4F4F);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #000000, #36454F);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-link::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .project-link:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(54, 69, 79, 0.4);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <section class="hero">
+        <h1>Saboor's Portfolio</h1>
+        <p>Data Analytics & Business Intelligence Specialist</p>
+        <p>Transforming raw data into actionable insights through advanced analytics, visualization, and machine learning</p>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">Explore my data-driven solutions across various domains</p>
+        
+        <div class="projects-grid">
+            <div class="project-card fade-in">
+                <div class="project-icon">📊</div>
+                <h3 class="project-title">Coca-Cola Sales Analysis</h3>
+                <p class="project-description">Comprehensive Power BI dashboard analyzing Coca-Cola sales performance with interactive visualizations and key performance indicators.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Power BI</span>
+                    <span class="tech-tag">Data Visualization</span>
+                    <span class="tech-tag">Sales Analytics</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Coca-Cola-Sales-Analysis-Power-Bi-Project" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🎬</div>
+                <h3 class="project-title">Movie Content SQL Analysis</h3>
+                <p class="project-description">Deep dive into movie database using advanced SQL queries to extract meaningful insights about content trends and patterns.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Database Analysis</span>
+                    <span class="tech-tag">Entertainment Data</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Movie-Content-SQL-Analysis" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🚚</div>
+                <h3 class="project-title">Saboor Logistics Database Management</h3>
+                <p class="project-description">Complete SQL database management system for logistics operations with optimized queries and performance monitoring.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Database Design</span>
+                    <span class="tech-tag">Logistics</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Saboor-Logistics-SQL-Database-Management" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🔧</div>
+                <h3 class="project-title">CarFast Data Quality Assessment</h3>
+                <p class="project-description">Comprehensive data cleaning and quality assessment project ensuring data integrity and reliability for automotive dataset.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Data Cleaning</span>
+                    <span class="tech-tag">Quality Assurance</span>
+                </div>
+                <a href="https://github.com/Saboor20032/CarFast-SQL-Data-Quality-Assessment-Cleaning" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🛍️</div>
+                <h3 class="project-title">Maya Shopit Sales Analysis</h3>
+                <p class="project-description">E-commerce sales analysis using SQL to identify trends, customer behavior, and business opportunities in retail data.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">E-commerce</span>
+                    <span class="tech-tag">Sales Analytics</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Maya-Shopit-Sales-SQL-Analysis" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">📈</div>
+                <h3 class="project-title">Power BI Sales Analysis</h3>
+                <p class="project-description">Interactive Power BI dashboard showcasing advanced data modeling and visualization techniques for sales performance tracking.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Power BI</span>
+                    <span class="tech-tag">DAX</span>
+                    <span class="tech-tag">Data Modeling</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Power-bi-Sales-Analysis" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🚗</div>
+                <h3 class="project-title">Car Price Time Series Analysis</h3>
+                <p class="project-description">Advanced time series analysis of car pricing trends using statistical models and forecasting techniques.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Time Series</span>
+                    <span class="tech-tag">Forecasting</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Car-Price-Time-Series-analysis" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🎯</div>
+                <h3 class="project-title">Netflix Movie Recommender System</h3>
+                <p class="project-description">Machine learning-powered recommendation system using collaborative filtering and content-based approaches for Netflix content.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">Recommendation Systems</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Netflix-Movie-Recommender-System" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+
+            <div class="project-card fade-in">
+                <div class="project-icon">🛡️</div>
+                <h3 class="project-title">Insurance Claim Prediction</h3>
+                <p class="project-description">Predictive analytics model for insurance claim assessment using Python and machine learning algorithms to analyze risk factors.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">Predictive Analytics</span>
+                </div>
+                <a href="https://github.com/Saboor20032/Insurance-Claim-Prediction-" class="project-link" target="_blank">
+                    View Project →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add interactive hover effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add click animation
+        document.querySelectorAll('.project-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const ripple = document.createElement('span');
+                const rect = link.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                link.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>
